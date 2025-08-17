@@ -12,7 +12,7 @@
         }
         
         body {
-            background-color: #f9fafb;
+            background-color: #e0c12466;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             min-height: 100vh;
         }
@@ -25,6 +25,7 @@
         /* Hero Section with Background Image */
         .hero-bg-container {
             position: relative;
+            height: 50vh;
             background-image: url('https://www.nextlevelurgentcare.com/wp-content/uploads/elementor/thumbs/AdobeStock_214597522-scaled-q34czun7wudxekym39fmlfwfhjtr16sa27qene04cg.jpeg');
             background-size: cover;
             background-position: center;
@@ -591,6 +592,87 @@
                 text-align: center;
             }
         }
+
+        footer {
+            background-color: #f28c389c; /* Orange background */
+            color: white;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #ffe4b5;
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .footer-logo {
+                font-size: 28px;
+            }
+
+            .social-icons {
+                margin: 10px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-logo {
+                font-size: 24px;
+            }
+
+            .social-icons a {
+                font-size: 24px;
+            }
+
+            .footer-bottom {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -685,7 +767,25 @@
             </div>
     </div>
 
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">🛒 FreshMart Grocery</div>
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook">&#x1F3E0;</a>
+                <a href="https://twitter.com" target="_blank" aria-label="Twitter">&#x1F426;</a>
+                <a href="https://instagram.com" target="_blank" aria-label="Instagram">&#x1F4F7;</a>
+                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">&#x1F4BC;</a>
+                <a href="mailto:contact@freshgrocery.com" aria-label="Inbox">&#x1F4E7;</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="year"></span> FreshMart Grocery. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
+
+        document.getElementById('year').textContent = new Date().getFullYear();
         // Sample grocery products data
         const groceryProducts = [
             {

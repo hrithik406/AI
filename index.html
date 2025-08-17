@@ -1,141 +1,1218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tourism Section Animation</title>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background: #f8f9fa;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Search & Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f9fafb;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 80rem;
+            margin: 0 auto;
+        }
+        
+        /* Hero Section with Background Image */
+        .hero-bg-container {
+            position: relative;
+            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/10792418878742349987');
+            background-size: cover;
+            background-position: center;
+            padding: 4rem 1rem 3rem;
+            border-bottom-left-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+            /* overflow: hidden; */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
 
-    section {
-        min-height: 150vh; /* extra height for scrolling */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
+        .hero-bg-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
 
-    .timeline {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
 
-    .line {
-        width: 4px;
-        background: #ccc;
-        position: relative;
-    }
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #d1d5db;
+            font-size: 1.125rem;
+        }
+        
+        /* Search Container */
+        .search-container {
+            position: relative;
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+        
+        .search-input-wrapper {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 3rem;
+            font-size: 1.125rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.75rem;
+            outline: none;
+            background-color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #9ca3af;
+            transition: transform 0.2s ease;
+        }
+        
+        .search-input:focus ~ .search-icon {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .clear-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 0.25rem;
+        }
+        
+        .clear-btn:hover {
+            color: #6b7280;
+        }
+        
+        .clear-btn.hidden {
+            display: none;
+        }
+        
+        .clear-btn svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        
+        /* Dropdown Styles */
+        .search-dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 0px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            z-index: 50;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .search-dropdown.show {
+            max-height: 300px;
+            transition: max-height 0.3s ease-in;
+        }
+        
+        /* Section Headers */
+        .section-header {
+            padding: 0.5rem 1rem;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title svg {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+        }
+        
+        .clear-history-btn {
+            font-size: 0.75rem;
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .clear-history-btn:hover {
+            color: #ef4444;
+        }
+        
+        /* Search Items */
+        .search-list {
+            max-height: 12rem;
+            overflow-y: auto;
+        }
+        
+        .history-list {
+            max-height: 8rem;
+            overflow-y: auto;
+        }
+        
+        .search-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: background-color 0.2s ease;
+            animation: fadeIn 0.2s ease-in;
+        }
+        
+        .search-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .search-item.highlighted {
+            background-color: #e5e7eb;
+        }
+        
+        .search-item-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .search-item-content svg {
+            width: 1rem;
+            height: 1rem;
+            color: #9ca3af;
+            margin-right: 0.75rem;
+        }
+        
+        .search-item-text {
+            color: #374151;
+        }
+        
+        .search-item-text strong {
+            color: #1f2937;
+        }
+        
+        /* Badges */
+        .badge {
+            font-size: 0.75rem;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+        
+        .history-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+        
+        .suggestion-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        /* No Results */
+        .no-results {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .no-results svg {
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto 0.5rem;
+            color: #d1d5db;
+        }
+        
+        .no-results p {
+            margin-bottom: 0.25rem;
+        }
+        
+        .no-results .sub-text {
+            font-size: 0.875rem;
+        }
+        
+        /* Products Grid */
+        .products-section {
+            margin: 2rem auto;
+        }
+        
+        .section-header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header-main h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* Product Card */
+        .product-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+        
+        .product-info {
+            padding: 1.25rem;
+        }
+        
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .product-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .product-category {
+            font-size: 0.875rem;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        
+        .product-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stars {
+            display: flex;
+            gap: 0.125rem;
+        }
+        
+        .star {
+            width: 1rem;
+            height: 1rem;
+            color: #fbbf24;
+        }
+        
+        .star.empty {
+            color: #d1d5db;
+        }
+        
+        .star.half-filled {
+            -webkit-mask-image: linear-gradient(to right, #fbbf24 50%, #d1d5db 50%);
+            mask-image: linear-gradient(to right, #fbbf24 50%, #d1d5db 50%);
+            color: transparent;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .current-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+        
+        .original-price {
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+        
+        .discount-badge {
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .add-to-cart {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .add-to-cart:hover {
+            background: #059669;
+        }
+        
+        .add-to-cart[disabled] {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+        }
 
-    .line::before, .line::after {
-        content: "";
-        position: absolute;
-        left: -3px;
-        width: 10px;
-        height: 10px;
-        background: white;
-        border: 2px solid #000;
-        border-radius: 50%;
-    }
+        .stock-status {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .in-stock {
+            color: #10b981;
+        }
+        
+        .low-stock {
+            color: #f59e0b;
+        }
+        
+        .out-of-stock {
+            color: #ef4444;
+        }
+        
+        /* Hidden utility */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(-5px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-bg-container {
+                padding: 3rem 1rem 2rem;
+            }
+            
+            .header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
 
-    .line::before {
-        top: 0;
-    }
+            .search-input {
+                font-size: 1rem;
+                padding: 0.875rem 2.5rem 0.875rem 2.5rem;
+            }
+            
+            .search-dropdown {
+                margin-top: 0.25rem;
+            }
+            
+            .search-list {
+                max-height: 10rem;
+            }
+            
+            .products-section {
+                margin: 1.5rem 1rem;
+            }
 
-    .line::after {
-        bottom: 0;
-    }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+            
+            .section-header-main {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-bg-container {
+                padding: 2rem 1rem 1.5rem;
+            }
 
-    .box {
-        width: 180px;
-        height: 120px;
-        border-radius: 12px;
-        background: #4CAF50;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2em;
-        opacity: 0;
-        transform: translateY(50px);
-        transition: all 0.6s ease-out;
-    }
+            .header h1 {
+                font-size: 1.5rem;
+            }
 
-    .box.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
+            .header p {
+                font-size: 0.875rem;
+            }
 
-    .row {
-        display: flex;
-        align-items: center;
-        margin: 50px 0;
-    }
-
-    .row.left {
-        flex-direction: row-reverse;
-    }
-
-    .connector {
-        width: 50px;
-        height: 2px;
-        background: black;
-    }
-</style>
+            .search-input {
+                padding: 0.75rem 2.25rem 0.75rem 2.25rem;
+                font-size: 0.875rem;
+            }
+            
+            .search-icon {
+                width: 1.25rem;
+                height: 1.25rem;
+                left: 0.75rem;
+            }
+            
+            .clear-btn {
+                right: 0.75rem;
+            }
+            
+            .clear-btn svg {
+                width: 1rem;
+                height: 1rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-buttons {
+                width: 100%;
+            }
+            
+            .filter-btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<section>
-    <div class="timeline">
-        <div class="column">
-            <div class="row left">
-                <div class="box">Place A</div>
-                <div class="connector"></div>
+    <div class="hero-bg-container">
+        <div class="hero-content">
+            <div class="header">
+                <h1>🛒 FreshMart Grocery</h1>
+                <p>Search for fresh groceries and everyday essentials</p>
             </div>
-            <div class="row left">
-                <div class="box">Place B</div>
-                <div class="connector"></div>
-            </div>
-        </div>
-
-        <div class="line"></div>
-
-        <div class="column">
-            <div class="row">
-                <div class="connector"></div>
-                <div class="box">Place C</div>
-            </div>
-            <div class="row">
-                <div class="connector"></div>
-                <div class="box">Place D</div>
+            
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Search for groceries, fruits, vegetables..."
+                        autocomplete="off"
+                        aria-label="Search for products"
+                        aria-autocomplete="list"
+                        aria-controls="searchDropdown"
+                        role="combobox"
+                    >
+                    
+                    <div class="search-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    
+                    <button id="clearBtn" class="clear-btn hidden" aria-label="Clear search input">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="searchDropdown" class="search-dropdown" role="listbox">
+                    <div id="historySection" class="hidden">
+                        <div class="section-header">
+                            <div class="section-title">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Recent Searches
+                            </div>
+                            <button id="clearHistoryBtn" class="clear-history-btn">
+                                Clear All
+                            </button>
+                        </div>
+                        <div id="historyList" class="history-list"></div>
+                    </div>
+                    
+                    <div id="suggestionsSection" class="hidden">
+                        <div class="section-header">
+                            <div class="section-title">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                Suggestions
+                            </div>
+                        </div>
+                        <div id="suggestionsList" class="search-list"></div>
+                    </div>
+                    
+                    <div id="noResults" class="no-results hidden">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <p>No results found for your search</p>
+                        <p class="sub-text">Try different keywords</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</section>
+    
+    <div class="products-section container">
+        <div class="section-header-main">
+            <h2 id="productsTitle">Fresh Products</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="fruits">Fruits</button>
+                <button class="filter-btn" data-category="vegetables">Vegetables</button>
+                <button class="filter-btn" data-category="dairy">Dairy</button>
+                <button class="filter-btn" data-category="meat">Meat</button>
+                <button class="filter-btn" data-category="pantry">Pantry</button>
+            </div>
+        </div>
+        
+        <div id="productsGrid" class="products-grid">
+            </div>
+    </div>
 
-<script>
-    const boxes = document.querySelectorAll('.box');
-
-    function checkVisibility() {
-        const triggerBottom = window.innerHeight * 0.85;
-        boxes.forEach(box => {
-            const boxTop = box.getBoundingClientRect().top;
-            if (boxTop < triggerBottom && boxTop > 0) {
-                box.classList.add('visible');
-            } else {
-                box.classList.remove('visible');
+    <script>
+        // Sample grocery products data
+        const groceryProducts = [
+            {
+                id: 1, name: 'Organic Red Apples', category: 'fruits',
+                image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400',
+                price: 4.99, originalPrice: 5.99, rating: 4.5, reviews: 128,
+                description: 'Fresh, crispy organic red apples. Perfect for snacking or baking.',
+                stock: 25, unit: '/lb'
+            },
+            {
+                id: 2, name: 'Fresh Bananas', category: 'fruits',
+                image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400',
+                price: 2.49, originalPrice: null, rating: 4.3, reviews: 89,
+                description: 'Sweet, ripe bananas perfect for smoothies and breakfast.',
+                stock: 40, unit: '/bunch'
+            },
+            {
+                id: 3, name: 'Organic Carrots', category: 'vegetables',
+                image: 'https://images.unsplash.com/photo-1582515073490-39981397c445?w=400',
+                price: 3.29, originalPrice: 3.99, rating: 4.7, reviews: 156,
+                description: 'Fresh organic carrots, great for cooking and juicing.',
+                stock: 12, unit: '/2lb bag'
+            },
+            {
+                id: 4, name: 'Whole Milk', category: 'dairy',
+                image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400',
+                price: 3.99, originalPrice: null, rating: 4.2, reviews: 203,
+                description: 'Fresh whole milk from local farms. Rich and creamy.',
+                stock: 18, unit: '/gallon'
+            },
+            {
+                id: 5, name: 'Free Range Eggs', category: 'dairy',
+                image: 'https://images.unsplash.com/photo-1518569656558-1f25e69d93d7?w=400',
+                price: 5.49, originalPrice: 6.49, rating: 4.8, reviews: 342,
+                description: 'Farm-fresh free range eggs. Grade A large.',
+                stock: 6, unit: '/dozen'
+            },
+            {
+                id: 6, name: 'Fresh Broccoli', category: 'vegetables',
+                image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400',
+                price: 2.99, originalPrice: null, rating: 4.1, reviews: 74,
+                description: 'Fresh green broccoli crowns. High in vitamins and fiber.',
+                stock: 22, unit: '/head'
+            },
+            {
+                id: 7, name: 'Chicken Breast', category: 'meat',
+                image: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400',
+                price: 8.99, originalPrice: 9.99, rating: 4.6, reviews: 267,
+                description: 'Boneless, skinless chicken breast. Fresh and lean.',
+                stock: 3, unit: '/lb'
+            },
+            {
+                id: 8, name: 'Strawberries', category: 'fruits',
+                image: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400',
+                price: 4.49, originalPrice: null, rating: 4.4, reviews: 198,
+                description: 'Sweet, juicy strawberries. Perfect for desserts and snacking.',
+                stock: 15, unit: '/lb'
+            },
+            {
+                id: 9, name: 'Basmati Rice', category: 'pantry',
+                image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400',
+                price: 6.99, originalPrice: 8.49, rating: 4.5, reviews: 412,
+                description: 'Premium long-grain basmati rice. Aromatic and fluffy.',
+                stock: 28, unit: '/5lb bag'
+            },
+            {
+                id: 10, name: 'Cheddar Cheese', category: 'dairy',
+                image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32b?w=400',
+                price: 5.99, originalPrice: null, rating: 4.3, reviews: 156,
+                description: 'Sharp aged cheddar cheese. Perfect for sandwiches and cooking.',
+                stock: 14, unit: '/8oz block'
+            },
+            {
+                id: 11, name: 'Bell Peppers', category: 'vegetables',
+                image: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400',
+                price: 3.99, originalPrice: 4.49, rating: 4.0, reviews: 89,
+                description: 'Colorful bell peppers. Sweet and crunchy.',
+                stock: 0, unit: '/3-pack'
+            },
+            {
+                id: 12, name: 'Whole Wheat Bread', category: 'pantry',
+                image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400',
+                price: 3.49, originalPrice: null, rating: 4.2, reviews: 234,
+                description: 'Fresh baked whole wheat bread. Soft and nutritious.',
+                stock: 19, unit: '/loaf'
             }
+        ];
+
+        class GroceryStore {
+            constructor() {
+                // Search functionality
+                this.searchInput = document.getElementById('searchInput');
+                this.searchDropdown = document.getElementById('searchDropdown');
+                this.clearBtn = document.getElementById('clearBtn');
+                this.clearHistoryBtn = document.getElementById('clearHistoryBtn');
+                this.historySection = document.getElementById('historySection');
+                this.historyList = document.getElementById('historyList');
+                this.suggestionsSection = document.getElementById('suggestionsSection');
+                this.suggestionsList = document.getElementById('suggestionsList');
+                this.noResults = document.getElementById('noResults');
+                
+                // Products functionality
+                this.productsGrid = document.getElementById('productsGrid');
+                this.productsTitle = document.getElementById('productsTitle');
+                this.filterButtons = document.querySelectorAll('.filter-btn');
+                
+                this.searchHistory = this.getStoredHistory();
+                this.currentHighlighted = -1;
+                this.currentFilter = 'all';
+                this.currentSearchQuery = '';
+                
+                this.init();
+                this.renderProducts();
+            }
+            
+            init() {
+                // Search event listeners
+                this.searchInput.addEventListener('input', (e) => this.handleInput(e));
+                this.searchInput.addEventListener('focus', () => this.showDropdown());
+                this.searchInput.addEventListener('keydown', (e) => this.handleKeydown(e));
+                this.clearBtn.addEventListener('click', () => this.clearSearch());
+                this.clearHistoryBtn.addEventListener('click', () => this.clearHistory());
+                
+                // Filter event listeners
+                this.filterButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => this.handleFilter(e));
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.search-container')) {
+                        this.hideDropdown();
+                    }
+                });
+            }
+            
+            handleInput(e) {
+                const query = e.target.value.trim();
+                this.currentSearchQuery = query;
+                this.toggleClearButton(query);
+                
+                if (query.length === 0) {
+                    this.showHistory();
+                    this.updateProductsTitle('Fresh Products');
+                    this.renderProducts();
+                } else {
+                    this.showSuggestions(query);
+                    this.updateProductsTitle(`Search Results for "${query}"`);
+                    this.renderProducts();
+                }
+            }
+            
+            handleKeydown(e) {
+                if (!this.searchDropdown.classList.contains('show')) return;
+                
+                const items = this.searchDropdown.querySelectorAll('.search-item');
+                
+                switch (e.key) {
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        this.currentHighlighted = Math.min(this.currentHighlighted + 1, items.length - 1);
+                        this.updateHighlight(items);
+                        break;
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        this.currentHighlighted = Math.max(this.currentHighlighted - 1, -1);
+                        this.updateHighlight(items);
+                        break;
+                    case 'Enter':
+                        e.preventDefault();
+                        if (this.currentHighlighted >= 0 && items[this.currentHighlighted]) {
+                            this.selectItem(items[this.currentHighlighted].getAttribute('data-text'));
+                        } else {
+                            this.performSearch(this.searchInput.value);
+                        }
+                        break;
+                    case 'Escape':
+                        this.hideDropdown();
+                        this.searchInput.blur();
+                        break;
+                }
+            }
+            
+            handleFilter(e) {
+                this.filterButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                this.currentFilter = e.target.dataset.category;
+                this.renderProducts();
+            }
+            
+            updateHighlight(items) {
+                items.forEach((item, index) => {
+                    item.classList.toggle('highlighted', index === this.currentHighlighted);
+                });
+                
+                if (this.currentHighlighted >= 0 && items[this.currentHighlighted]) {
+                    items[this.currentHighlighted].scrollIntoView({ block: 'nearest' });
+                }
+            }
+            
+            showDropdown() {
+                const query = this.searchInput.value.trim();
+                
+                if (query.length === 0) {
+                    this.showHistory();
+                } else {
+                    this.showSuggestions(query);
+                }
+                
+                this.searchDropdown.classList.add('show');
+                this.currentHighlighted = -1;
+            }
+            
+            hideDropdown() {
+                this.searchDropdown.classList.remove('show');
+                this.currentHighlighted = -1;
+            }
+            
+            showHistory() {
+                this.hideAllSections();
+                
+                if (this.searchHistory.length > 0) {
+                    this.historySection.classList.remove('hidden');
+                    this.renderHistory();
+                } else {
+                    this.hideDropdown();
+                }
+            }
+            
+            showSuggestions(query) {
+                this.hideAllSections();
+                
+                const suggestions = this.getSuggestions(query);
+                
+                if (suggestions.length > 0) {
+                    this.suggestionsSection.classList.remove('hidden');
+                    this.renderSuggestions(suggestions, query);
+                } else {
+                    this.noResults.classList.remove('hidden');
+                }
+            }
+            
+            hideAllSections() {
+                this.historySection.classList.add('hidden');
+                this.suggestionsSection.classList.add('hidden');
+                this.noResults.classList.add('hidden');
+            }
+            
+            getSuggestions(query) {
+                const lowerQuery = query.toLowerCase();
+                return groceryProducts
+                    .map(product => product.name)
+                    .filter(name => name.toLowerCase().includes(lowerQuery))
+                    .slice(0, 8);
+            }
+            
+            renderHistory() {
+                this.historyList.innerHTML = this.searchHistory
+                    .slice(-5)
+                    .reverse()
+                    .map(item => this.createSearchItem(item, 'history'))
+                    .join('');
+                
+                this.addItemListeners();
+            }
+            
+            renderSuggestions(suggestions, query) {
+                this.suggestionsList.innerHTML = suggestions
+                    .map(item => this.createSearchItem(item, 'suggestion', query))
+                    .join('');
+                
+                this.addItemListeners();
+            }
+            
+            createSearchItem(text, type, query = '') {
+                const badge = type === 'history' 
+                    ? '<span class="badge history-badge">Recent</span>'
+                    : '<span class="badge suggestion-badge">Suggested</span>';
+                
+                let displayText = text;
+                if (query && type === 'suggestion') {
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    displayText = text.replace(regex, '<strong>$1</strong>');
+                }
+                
+                const icon = type === 'history' 
+                    ? '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+                    : '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>';
+                
+                return `
+                    <div class="search-item" data-text="${text}">
+                        <div class="search-item-content">
+                            ${icon}
+                            <span class="search-item-text">${displayText}</span>
+                        </div>
+                        ${badge}
+                    </div>
+                `;
+            }
+            
+            addItemListeners() {
+                const items = this.searchDropdown.querySelectorAll('.search-item');
+                items.forEach(item => {
+                    item.addEventListener('click', () => {
+                        this.selectItem(item.getAttribute('data-text'));
+                    });
+                });
+            }
+            
+            selectItem(text) {
+                this.searchInput.value = text;
+                this.performSearch(text);
+            }
+            
+            performSearch(query) {
+                if (query.trim()) {
+                    this.addToHistory(query.trim());
+                    this.currentSearchQuery = query.trim();
+                    this.updateProductsTitle(`Search Results for "${query}"`);
+                    this.renderProducts();
+                }
+                this.hideDropdown();
+            }
+            
+            addToHistory(query) {
+                if (!this.searchHistory.includes(query)) {
+                    this.searchHistory.push(query);
+                    if (this.searchHistory.length > 10) {
+                        this.searchHistory.shift();
+                    }
+                    this.saveHistory();
+                }
+            }
+            
+            clearSearch() {
+                this.searchInput.value = '';
+                this.currentSearchQuery = '';
+                this.searchInput.focus();
+                this.toggleClearButton('');
+                this.updateProductsTitle('Fresh Products');
+                this.renderProducts();
+                this.showHistory();
+            }
+            
+            clearHistory() {
+                this.searchHistory = [];
+                this.saveHistory();
+                this.hideDropdown();
+            }
+            
+            toggleClearButton(query) {
+                if (query.length > 0) {
+                    this.clearBtn.classList.remove('hidden');
+                } else {
+                    this.clearBtn.classList.add('hidden');
+                }
+            }
+            
+            updateProductsTitle(title) {
+                this.productsTitle.textContent = title;
+            }
+            
+            // Products functionality
+            renderProducts() {
+                const filteredProducts = this.getFilteredProducts();
+                
+                if (filteredProducts.length === 0) {
+                    this.productsGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                            <p style="color: #6b7280; font-size: 1.125rem;">No products found</p>
+                            <p style="color: #9ca3af; margin-top: 0.5rem;">Try adjusting your search or filter</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                this.productsGrid.innerHTML = filteredProducts
+                    .map(product => this.createProductCard(product))
+                    .join('');
+                
+                this.addProductListeners();
+            }
+            
+            getFilteredProducts() {
+                let filtered = groceryProducts;
+                
+                // Filter by category
+                if (this.currentFilter !== 'all') {
+                    filtered = filtered.filter(product => product.category === this.currentFilter);
+                }
+                
+                // Filter by search query
+                if (this.currentSearchQuery) {
+                    const query = this.currentSearchQuery.toLowerCase();
+                    filtered = filtered.filter(product => 
+                        product.name.toLowerCase().includes(query) ||
+                        product.description.toLowerCase().includes(query) ||
+                        product.category.toLowerCase().includes(query)
+                    );
+                }
+                
+                return filtered;
+            }
+            
+            createProductCard(product) {
+                const discount = product.originalPrice ? 
+                    Math.round((1 - product.price / product.originalPrice) * 100) : 0;
+                
+                const stockStatus = product.stock === 0 ? 'out-of-stock' :
+                                   product.stock < 10 ? 'low-stock' : 'in-stock';
+                
+                const stockText = product.stock === 0 ? 'Out of Stock' :
+                                 product.stock < 10 ? `Only ${product.stock} left` : 'In Stock';
+                
+                const stars = this.generateStars(product.rating);
+                
+                return `
+                    <div class="product-card" data-id="${product.id}">
+                        <img src="${product.image}" alt="${product.name}" class="product-image" loading="lazy">
+                        <div class="product-info">
+                            <div class="product-header">
+                                <div>
+                                    <h3 class="product-name">${product.name}</h3>
+                                    <span class="product-category">${product.category}</span>
+                                </div>
+                                ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
+                            </div>
+                            
+                            <p class="product-description">${product.description}</p>
+                            
+                            <div class="product-rating">
+                                <div class="stars">${stars}</div>
+                                <span class="rating-text">${product.rating} (${product.reviews} reviews)</span>
+                            </div>
+                            
+                            <div class="product-footer">
+                                <div class="product-price">
+                                    <span class="current-price">${product.price.toFixed(2)}${product.unit}</span>
+                                    ${product.originalPrice ? `<span class="original-price">${product.originalPrice.toFixed(2)}</span>` : ''}
+                                </div>
+                                <button class="add-to-cart" ${product.stock === 0 ? 'disabled' : ''} data-id="${product.id}">
+                                    ${product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                                </button>
+                            </div>
+                            
+                            <div class="stock-status ${stockStatus}">${stockText}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            generateStars(rating) {
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                
+                let stars = '';
+                
+                // Full stars
+                for (let i = 0; i < fullStars; i++) {
+                    stars += '<svg class="star" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>';
+                }
+                
+                // Half star (if needed)
+                if (hasHalfStar) {
+                    stars += '<svg class="star" fill="currentColor" viewBox="0 0 20 20"><defs><linearGradient id="half"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db"/></linearGradient></defs><path fill="url(#half)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>';
+                }
+                
+                // Empty stars
+                for (let i = 0; i < emptyStars; i++) {
+                    stars += '<svg class="star empty" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>';
+                }
+                
+                return stars;
+            }
+            
+            addProductListeners() {
+                const addToCartButtons = document.querySelectorAll('.add-to-cart');
+                const productCards = document.querySelectorAll('.product-card');
+                
+                addToCartButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const productId = parseInt(btn.dataset.id);
+                        this.addToCart(productId);
+                    });
+                });
+                
+                productCards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        const productId = parseInt(card.dataset.id);
+                        this.viewProduct(productId);
+                    });
+                });
+            }
+            
+            addToCart(productId) {
+                const product = groceryProducts.find(p => p.id === productId);
+                if (product && product.stock > 0) {
+                    // Simulate adding to cart
+                    alert(`Added ${product.name} to cart!`);
+                    console.log('Added to cart:', product);
+                }
+            }
+            
+            viewProduct(productId) {
+                const product = groceryProducts.find(p => p.id === productId);
+                if (product) {
+                    alert(`Viewing ${product.name}\n\nPrice: ${product.price}${product.unit}\nRating: ${product.rating}/5\nStock: ${product.stock}\n\n${product.description}`);
+                    console.log('Viewing product:', product);
+                }
+            }
+            
+            getStoredHistory() {
+                const history = sessionStorage.getItem('searchHistory');
+                return history ? JSON.parse(history) : [];
+            }
+            
+            saveHistory() {
+                sessionStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+            }
+        }
+        
+        // Initialize the grocery store when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new GroceryStore();
         });
-    }
-
-    window.addEventListener('scroll', checkVisibility);
-    checkVisibility();
-</script>
-
+    </script>
 </body>
 </html>

@@ -527,6 +527,8 @@ window.addEventListener("DOMContentLoaded", (e) =>{
             new GroceryStore();
         });
 
+        new GroceryStore()
+
         })
 
        

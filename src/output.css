@@ -166,7 +166,7 @@
     position: static;
   }
   .container {
-    width: 100%;
+    width: auto;
     @media (width >= 40rem) {
       max-width: 40rem;
     }
@@ -450,7 +450,7 @@ body {
   font-size: 0.875rem;
 }
 .products-section {
-  margin: 2rem auto;
+  margin: 2rem 1rem;
 }
 .section-header-main {
   display: flex;

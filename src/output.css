@@ -623,6 +623,13 @@ body {
     transform: translateY(0);
   }
 }
+
+@media(min-width: 1300px){
+  .products-section{
+    margin: 2rem auto;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-bg-container {
     padding: 3rem 1rem 2rem;
